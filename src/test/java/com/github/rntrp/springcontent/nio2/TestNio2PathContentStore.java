@@ -11,8 +11,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.util.List;
 
-import static com.github.rntrp.springcontent.nio2.TestNio2PathUtils.initStore;
-import static com.github.rntrp.springcontent.nio2.TestNio2PathUtils.newFileSystem;
+import static com.github.rntrp.springcontent.nio2.TestNio2PathUtils.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -131,6 +130,24 @@ class TestNio2PathContentStore {
             entity.setContent2(44);
             store.unassociate(entity, PropertyPath.from("content2"));
             assertNull(entity.getContent2());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"osx", "windows", "unix"})
+    void testGetLoader(String configuration) throws IOException {
+        try (FileSystem fs = newFileSystem(configuration)) {
+            Nio2PathContentStore<TestEntityMultiContent, Integer> store = initStore(fs, "test");
+            assertNotNull(store.getLoader());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"osx", "windows", "unix"})
+    void testGetPlacer(String configuration) throws IOException {
+        try (FileSystem fs = newFileSystem(configuration)) {
+            Nio2PathContentStore<TestEntityMultiContent, Integer> store = initStore(fs, "test");
+            assertEquals(PLACEMENT_SERVICE, store.getPlacer());
         }
     }
 }
