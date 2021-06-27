@@ -3,6 +3,7 @@ package com.github.rntrp.springcontent.nio2;
 import org.springframework.content.commons.io.DeletableResource;
 import org.springframework.content.commons.io.IdentifiableResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.lang.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +29,9 @@ public class Nio2PathResource extends FileSystemResource implements DeletableRes
         return path;
     }
 
+    @NonNull
     @Override
-    public Nio2PathResource createRelative(String relativePath) {
+    public Nio2PathResource createRelative(@NonNull String relativePath) {
         return new Nio2PathResource(path.resolve(relativePath), pathService);
     }
 
@@ -45,6 +47,7 @@ public class Nio2PathResource extends FileSystemResource implements DeletableRes
         }
     }
 
+    @NonNull
     @Override
     public OutputStream getOutputStream() throws IOException {
         if (!Files.exists(path)) {

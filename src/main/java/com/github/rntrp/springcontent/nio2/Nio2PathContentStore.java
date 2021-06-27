@@ -128,10 +128,7 @@ public class Nio2PathContentStore<S, SID extends Serializable> implements Conten
         if (placer.canConvert(entity.getClass(), String.class)) {
             String location = placer.convert(entity, String.class);
             if (location != null) {
-                Nio2PathResource resource = loader.getResource(location);
-                if (resource != null) {
-                    return resource;
-                }
+                return loader.getResource(location);
             }
         }
         SID contentId = (SID) BeanUtils.getFieldWithAnnotation(entity, ContentId.class);

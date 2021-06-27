@@ -1,6 +1,7 @@
 package com.github.rntrp.springcontent.nio2;
 
 import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.lang.NonNull;
 
 import java.nio.file.Path;
 import java.util.Objects;
@@ -18,8 +19,9 @@ public class Nio2PathResourceLoader extends FileSystemResourceLoader {
         return root;
     }
 
+    @NonNull
     @Override
-    public Nio2PathResource getResource(String location) {
+    public Nio2PathResource getResource(@NonNull String location) {
         return root.createRelative(location);
     }
 }
