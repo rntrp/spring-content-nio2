@@ -12,6 +12,7 @@ import org.springframework.content.commons.utils.Condition;
 import org.springframework.content.commons.utils.PlacementService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.io.Resource;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
+@Transactional(readOnly = true)
 public class Nio2PathContentStore<S, SID extends Serializable> implements ContentStore<S, SID> {
     private static final Condition NOT_PERSISTENCE_ID = field -> {
         for (Annotation annotation : field.getAnnotations()) {
@@ -42,6 +44,7 @@ public class Nio2PathContentStore<S, SID extends Serializable> implements Conten
         this.placer = placer;
     }
 
+    @Transactional
     @Override
     public S setContent(S property, InputStream content) {
         Object contentId = BeanUtils.getFieldWithAnnotation(property, ContentId.class);
@@ -71,6 +74,7 @@ public class Nio2PathContentStore<S, SID extends Serializable> implements Conten
         return property;
     }
 
+    @Transactional
     @Override
     public S setContent(S property, Resource resourceContent) {
         try (InputStream in = resourceContent.getInputStream()) {
@@ -81,6 +85,7 @@ public class Nio2PathContentStore<S, SID extends Serializable> implements Conten
         }
     }
 
+    @Transactional
     @Override
     public S unsetContent(S property) {
         if (property == null) {
